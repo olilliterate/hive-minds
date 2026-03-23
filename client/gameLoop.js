@@ -1,6 +1,21 @@
+
+function chooseGame(previousGameId) {
+	pass 
+}
+
+function clearGameBoard() {
+	pass
+}
+
+function showResults(counter, getLeaderboard){
+	pass
+}
+
+
 function endGame() {
-			showResults(counter, getLeaderboard)
-		}
+	clearGameBoard()
+	showResults(counter, getLeaderboard)
+}
 
 // start game play
 let previousGameId = null
@@ -10,6 +25,7 @@ function startGameLoop() {
 
 	// store the id of the previous mini game
 	// load a game
+	// consider clearing game logic
 	const { chosenGame, gameId } = chooseGame(previousGameId)
 	previousGameId = gameId
 		
