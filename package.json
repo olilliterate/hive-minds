@@ -4,8 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose --watchAll --detectOpenHandles --runInBand",
-    "setup-db": "node ./server/db/setup.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "setup-db": "node ./server/db/setup.js",
+    "test": "jest --watchAll --detectOpenHandles --runInBand --verbose",
+    "setup-test-db": "NODE_ENV=test node ./database/setup.js",
+    "unitTests": "jest --testPathPattern=/unit/ --watchAll --verbose",
+    "integrationTests": "jest --testPathPatterns=/integration/ --watchAll --detectOpenHandles --runInBand --verbose",
+    "coverage": "jest --coverage --testPathPatterns=/unit/"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "./__tests__/integration/config.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -31,6 +42,7 @@
     "express": "^5.2.1",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.3",
-    "pg": "^8.20.0"
+    "pg": "^8.20.0",
+    "supertest": "^7.2.2"
   }
 }

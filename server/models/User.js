@@ -21,9 +21,27 @@ class User {
     this.role = role;
   }
 
-  static async getAll() {
-    const result = await db.query("SELECT * FROM users");
-    return result.rows.map((row) => new User(...Object.values(row)));
+  static async getStudents() {
+    const result = await db.query("SELECT * FROM users WHERE role = $1", [
+      "student",
+    ]);
+    if (result.rows.length === 0) {
+      throw new Error("No students found");
+    }
+
+    return result.rows.map(
+      (row) =>
+        new User(
+          row.id,
+          row.first_name,
+          row.last_name,
+          row.email,
+          row.password,
+          row.school,
+          row.year_group,
+          row.role,
+        ),
+    );
   }
 
   static async getByEmail(email) {
@@ -32,7 +50,7 @@ class User {
     ]);
 
     if (result.rows.length === 0) {
-      return null;
+      throw new Error("User not found");
     }
 
     const row = result.rows[0];
@@ -52,13 +70,38 @@ class User {
   static async create(user) {
     const { firstName, lastName, email, password, school, yearGroup, role } =
       user;
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !password ||
+      !school ||
+      !yearGroup ||
+      !role
+    ) {
+      throw new Error("All fields are required");
+    }
+
     const result = await db.query(
-      "INSERT INTO users (first_name, last_name, email, password, school, year_group, role) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      `INSERT INTO users 
+    (first_name, last_name, email, password, school, year_group, role) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7) 
+    RETURNING *`,
       [firstName, lastName, email, password, school, yearGroup, role],
     );
-    const newId = response.rows[0].id;
-    const newUser = new User.getById(newId);
-    return newUser;
+
+    const row = result.rows[0];
+
+    return new User(
+      row.id,
+      row.first_name,
+      row.last_name,
+      row.email,
+      row.password,
+      row.school,
+      row.year_group,
+      row.role,
+    );
   }
 }
 module.exports = User;
