@@ -1,3 +1,7 @@
+const {runMCQ} = require("./mcq")
+const { runOddOneOut } = require()
+const { runPictureQuestion} = require()
+
 function chooseGame(previousGameId) {
   pass;
 }
@@ -49,7 +53,7 @@ function showResults(counter, getLeaderboard) {
 
     row.appendChild(name);
     row.appendChild(score);
-    row.appendChild(row);
+    row.appendChild(date);
     tableBody.appendChild(row);
   });
 
@@ -82,6 +86,7 @@ function startGameLoop() {
   // consider clearing game logic
   const { chosenGame, gameId } = chooseGame(previousGameId);
   previousGameId = gameId;
+  clearGameBoard()
 
   // run the choosen game
 
@@ -94,4 +99,14 @@ function startGameLoop() {
       endGame();
     }
   });
+}
+
+module.exports = {
+	startGameLoop,
+	endGame,
+	clearGameBoard,
+	showResults,
+	resetCounter,
+	getCounter,
+	chooseGame
 }

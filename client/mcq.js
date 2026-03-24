@@ -42,4 +42,4 @@ function runMCQ(question) {
   });
 }
 
-module.exports = runMCQ
+module.exports = {runMCQ}

@@ -20,6 +20,7 @@
   "homepage": "https://github.com/olilliterate/hive-minds#readme",
   "devDependencies": {
     "jest": "^30.3.0",
+    "jest-environment-jsdom": "^29.7.0",
     "jsdom": "^29.0.1",
     "nodemon": "^3.1.14"
   },
