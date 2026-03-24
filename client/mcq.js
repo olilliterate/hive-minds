@@ -19,7 +19,7 @@ function runMCQ(question) {
     );
 
     // select game space should already be a div or section
-    const gameBoard = document.getElementById("game-board");
+    const gameBoard = document.querySelector(".game-board");
 
     // make question
     const questionEl = document.createElement("h2");

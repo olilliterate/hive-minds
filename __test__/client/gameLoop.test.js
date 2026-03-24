@@ -1,4 +1,4 @@
-// writing tests
+// import functions
 
 describe("Game Loop logic tests", () => {
   // need before each to reset the counter
@@ -50,13 +50,28 @@ describe("Game Loop logic tests", () => {
 
     // need to emmulate DOM elements
 
+    document.body.innerHTML = "<div id='results'></div>"
+    showResults(4, mockGetLeaderBoard) // (counter, getLeaderBoard)
+
+    expect(mockGetLeaderBoard).toHaveBeenCalled()
   });
+
+  test("getLeaderBoard produces")
   
 
   test("clearGame Board removes the elements", () => {
     // I want to clear what is already there
     // need DOM pieces
     // can you just write DOM structures in JS?
+    //arranfe
+    document.body.innerHTML = `
+    <div class = 'game-board'>
+        <div class='game-part'></div>
+    </div>`
+    // act
+    clearGameBoard()
+    //assert
+    expect(document.querySelector(".game-board")).toBeNull
 
   });
   
@@ -66,6 +81,12 @@ describe("MCQ tests", () => {
   test("MCQ test returns back correct");
   // when answered correctly it should return back "correct"
   // we did mocking with DOM elements
+
+  //arange
+
+  //act
+
+  //assert
 
 
 
