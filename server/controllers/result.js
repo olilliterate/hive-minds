@@ -18,3 +18,8 @@ const postResult = async (req, res) => {
         res.status(500).send({ error: err.message })
     }
 }
+
+module.exports = {
+    index,
+    postResult
+}
