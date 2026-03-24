@@ -1,8 +1,11 @@
-DROP TABLE IF EXISTS user_id;
+DROP TABLE IF EXISTS result;
+DROP TABLE IF EXISTS user_data;
 
 CREATE TABLE user_data (
     user_id INT GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(100) NOT NULL,
+    school_name VARCHAR(100) NOT NULL,
+    year_group INT NOT NULL,
     class VARCHAR(10) NOT NULL,
     email VARCHAR(150) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -11,9 +14,9 @@ CREATE TABLE user_data (
 
 );
 
-INSERT INTO user_data (name, class, email, password)
+INSERT INTO user_data (name, school_name, year_group, class, email, password)
 VALUES
- ('Oliver', '7C3', 'oliver@bjerg.co.uk', '3');
+ ('Oliver', 'Backwell School', 7 , '7C3', 'oliver@bjerg.co.uk', '3'); 
 
 DROP TABLE IF EXISTS ooo_question;
 
@@ -37,21 +40,22 @@ VALUES
 DROP TABLE IF EXISTS mql_question;
 
 CREATE TABLE mql_question (
-    mql_id INT GENERATED ALWAYS AS IDENTITY,
+    id INT GENERATED ALWAYS AS IDENTITY,
     question_body VARCHAR(255) NOT NULL,
     answer INT NOT NULL,
     prompt_one VARCHAR(255) NOT NULL,
     prompt_two VARCHAR(255) NOT NULL,
     prompt_three VARCHAR (255) NOT NULL,
     prompt_four VARCHAR(255) NOT NULL,
-    PRIMARY KEY (mql_id)
+    PRIMARY KEY (id)
 
 );
 
 
 INSERT INTO mql_question (question_body, answer, prompt_one, prompt_two, prompt_three, prompt_four)
 VALUES
- ('What is the most populated part of the UK?', 1, 'England', 'Northern Ireland', 'Wales', 'Scotland');
+ ('What is the most populated part of the UK?', 1, 'England', 'Northern Ireland', 'Wales', 'Scotland'),
+ ('What is not a city in the UK?', 3, 'London', 'Bristol', 'Paris', 'Swansea');
 
 DROP TABLE IF EXISTS flashcard;
 
@@ -70,7 +74,7 @@ VALUES
  ('Term 3', 'Def 3', 'The tests'),
  ('Term 4', 'Def 4', 'The tests');
 
-DROP TABLE IF EXISTS result;
+
 
 CREATE TABLE result (
     id INT GENERATED ALWAYS AS IDENTITY,
