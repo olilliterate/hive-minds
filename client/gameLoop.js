@@ -8,54 +8,54 @@ function clearGameBoard() {
 }
 
 function showResults(counter, getLeaderboard) {
-	const gameBoard = document.querySelector(".game-board")
+  const gameBoard = document.querySelector(".game-board");
 
-	// counter result
-	const counterEl = document.createElement("h1")
-	counterEl.textContent = counter
-	gameBoard.appendChild(counterEl)
+  // counter result
+  const counterEl = document.createElement("h1");
+  counterEl.textContent = counter;
+  gameBoard.appendChild(counterEl);
 
-	// table set up
-	const table = document.createElement("table")
+  // table set up
+  const table = document.createElement("table");
 
-	//header
-	const tableHeader = document.createElement("thead")
-	const headerRow = document.createElement("tr")
+  //header
+  const tableHeader = document.createElement("thead");
+  const headerRow = document.createElement("tr");
 
-	const headers = ["Name", "Score", "Date"].forEach(header => {
-		const th = document.createElement("th")
-		th.textContent = header
-		headerRow.appendChild(th)
-	})
+  const headers = ["Name", "Score", "Date"].forEach((header) => {
+    const th = document.createElement("th");
+    th.textContent = header;
+    headerRow.appendChild(th);
+  });
 
-	tableHeader.appendChild(headerRow)
-	table.appendChild(tableHeader)
+  tableHeader.appendChild(headerRow);
+  table.appendChild(tableHeader);
 
-	// rows
-	const tableBody = document.createElement("tbody")
-	
-	getLeaderboard.forEach(item => {
-		const row = document.createElement("tr")
+  // rows
+  const tableBody = document.createElement("tbody");
 
-		// tabke contents
-		const name = document.createElement("td")
-		name.textContent = item.name
+  getLeaderboard.forEach((item) => {
+    const row = document.createElement("tr");
 
-		const score = document.createElement("td")
-		score.textContent = item.score
+    // tabke contents
+    const name = document.createElement("td");
+    name.textContent = item.name;
 
-		const date = document.createElement("td")
-		date.textContent = item.date
+    const score = document.createElement("td");
+    score.textContent = item.score;
 
-		row.appendChild(name)
-		row.appendChild(score)
-		row.appendChild(row)
-	})
+    const date = document.createElement("td");
+    date.textContent = item.date;
 
-	table.appendChild(tableBody)
+    row.appendChild(name);
+    row.appendChild(score);
+    row.appendChild(row);
+    tableBody.appendChild(row);
+  });
 
-	gameBoard.appendChild(table)
-	
+  table.appendChild(tableBody);
+
+  gameBoard.appendChild(table);
 }
 
 function endGame() {

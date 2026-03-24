@@ -41,3 +41,5 @@ function runMCQ(question) {
     });
   });
 }
+
+module.exports = runMCQ
