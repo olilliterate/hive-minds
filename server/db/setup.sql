@@ -2,21 +2,19 @@ DROP TABLE IF EXISTS result;
 DROP TABLE IF EXISTS user_data;
 
 CREATE TABLE user_data (
-    user_id INT GENERATED ALWAYS AS IDENTITY,
-    name VARCHAR(100) NOT NULL,
-    school_name VARCHAR(100) NOT NULL,
-    year_group INT NOT NULL,
-    class VARCHAR(10) NOT NULL,
-    email VARCHAR(150) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    role VARCHAR (10) NOT NULL DEFAULT 'Student',
-    PRIMARY KEY (user_id)
-
+  user_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  school VARCHAR(100) NOT NULL,
+  year_group INT NOT NULL,
+  role VARCHAR(10) NOT NULL DEFAULT 'Student'
 );
 
-INSERT INTO user_data (name, school_name, year_group, class, email, password)
+INSERT INTO user_data (first_name, last_name, school, year_group, email, password)
 VALUES
- ('Oliver', 'Backwell School', 7 , '7C3', 'oliver@bjerg.co.uk', '3'); 
+ ('Oliver','Backwell', 'Backwell School', 7 , 'oliver@bjerg.co.uk', '34567890'); 
 
 DROP TABLE IF EXISTS ooo_question;
 
