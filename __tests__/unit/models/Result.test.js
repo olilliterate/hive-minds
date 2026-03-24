@@ -19,7 +19,7 @@ describe("Result", () => {
             expect(results).toHaveLength(3);
             expect(results[0]).toHaveProperty('id');
             expect(results[0].name).toBe('Test 1');
-            expect(db.query).toHaveBeenCalledWith("SELECT user_data.name, result.streak, result.id, result.date, result.user_id FROM result LEFT JOIN user_date ON (user_data.user_id = result.user_id);")
+            expect(db.query).toHaveBeenCalledWith("SELECT user_data.name, result.streak, result.id, result.date, result.user_id FROM result LEFT JOIN user_data ON (user_data.user_id = result.user_id);")
         })
         it("should throw an Error when no results are found", async () => {
             //Arrange
