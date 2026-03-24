@@ -1,32 +1,75 @@
 // writing tests
 
 describe("Game Loop logic tests", () => {
-    test("chosen game does not return previous game", () => {
-        const { gameId } = chooseGame(null)
-        const { gameId: secondId } = chooseGame(gameId)
-        expect(secondId).not.toBe(gameId)
-    })
+  // need before each to reset the counter
 
-    test("runGame counter increment increases") 
-    // this feels weird, but it is a names thing I wrote
+  test("chosen returns a valid game on first call", () => {
+    //Arrange and Act
+    const result = chooseGame(null);
 
-    test("end game works")
+    expect(result).toHaveProperty(chosenGame);
+    expect(result).toHaveProperty(gameId);
+  });
+
+  test("chosen game does not return previous game", () => {
+    //Arrange
+    const { gameId } = chooseGame(null);
+
+    //Act
+    const { gameId: secondId } = chooseGame(gameId);
+
+    //Assert
+    expect(secondId).not.toBe(gameId);
+  });
+
+  test("runGame counter increment increases");
+  // this feels weird, but it is a names thing I wrote
+  // need to mock runGame to return "correct"
+
+
+  test("end game works", () => {
     // removes game elements the shows results
-    // 
+    // need to use jest spy
 
-    test("showResults returns gets leaderboard data")
+    const clearSpy = jest.spyOn(startGameLoop, "clearGameBoard");
+    const resultsSpy = jest.spyOn(startGameLoop, "showResults")
+
+    endGame()
+
+    expect(clearSpy).toHaveBeenCalled()
+    expect(resultsSPy).toHaveBeenCalled()
+  });
+
+  test("showResults calls getLeaderboard and redners score", () =>{
     // I want to test the elements that are being produced
+    // mock getLeaderboard
+    const mockGetLeaderBoard = jest.fn().mockReturnValue([
+        {name: "Alice", score: 5},
+        {name: "Tom", score: 3}
+    ])
 
-    test("clearGame Board removes the elements")
+    // need to emmulate DOM elements
+
+  });
+  
+
+  test("clearGame Board removes the elements", () => {
     // I want to clear what is already there
+    // need DOM pieces
+    // can you just write DOM structures in JS?
 
-})
+  });
+  
+});
 
 describe("MCQ tests", () => {
-    test("MCQ test returns back correct")
-    // when answered correctly it should return back "correct"
+  test("MCQ test returns back correct");
+  // when answered correctly it should return back "correct"
+  // we did mocking with DOM elements
 
-    test("retrun wrong when wrong")
-})
+
+
+  test("retrun wrong when wrong");
+});
 
 // get random game,

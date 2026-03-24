@@ -17,6 +17,16 @@ function endGame() {
 	showResults(counter, getLeaderboard)
 }
 
+function resetCounter() {
+	return counter = 0
+}
+
+function getCounter() {
+	return counter
+}
+
+
+
 // start game play
 let previousGameId = null
 let counter = 0
@@ -31,7 +41,7 @@ function startGameLoop() {
 		
 	// run the choosen game
 		
-	runCGame(chosenGame, (result) => { // callback needs to return something
+	runGame(chosenGame, (result) => { // callback needs to return something
 		if (result === "correct") {
 		counter += 1
 		startGameLoop()
