@@ -1,11 +1,11 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { register, login } = require("../../../controllers/user");
-const User = require("../../../models/User");
+const { register, login } = require("../../../server/controllers/user");
+const User = require("../../../server/models/User");
 
 jest.mock("bcrypt");
 jest.mock("jsonwebtoken");
-jest.mock("../../../models/User");
+jest.mock("../../../server/models/User");
 
 const mockSend = jest.fn();
 const mockJson = jest.fn();

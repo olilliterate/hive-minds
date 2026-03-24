@@ -1,5 +1,5 @@
-const db = require("../../../db/connect");
-const User = require("../../../models/User");
+const db = require("../../../server/db/connect");
+const User = require("../../../server/models/User");
 
 describe("User", () => {
   beforeEach(() => jest.clearAllMocks());
