@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../model/User");
+const User = require("../models/User");
 
 // Controller functions for user registration
 async function register(req, res) {
@@ -54,7 +54,17 @@ async function login(req, res) {
   }
 }
 
+async function getStudents(req, res) {
+  try {
+    const students = await User.getStudents();
+    res.status(200).json(students);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+}
+
 module.exports = {
   register,
   login,
+  getStudents,
 };
