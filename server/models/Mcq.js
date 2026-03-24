@@ -14,12 +14,16 @@ class Mcq {
     }
 
     static async getRandomGame(gameIDS) {
-        const response = await db.query("SELECT * FROM mql_question;");
-        //Get all mql questions
-        const gameArr = response.rows.map((ele) => new Mcq(ele)); //Turn them into JS objects
-        const filteredArray = gameArr.filter((ele) => !gameIDS.includes(ele.id)); //Filter games that have already been played
-        return randomChoice(filteredArray); // Return an unplayed game
+        try{
+            const response = await db.query("SELECT * FROM mql_question;");
+            //Get all mql questions
+            const gameArr = response.rows.map((ele) => new Mcq(ele)); //Turn them into JS objects
+            const filteredArray = gameArr.filter((ele) => !gameIDS.includes(ele.id)); //Filter games that have already been played
+            return randomChoice(filteredArray); // Return an unplayed game
     
+        } catch (err) {
+            throw new Error("Error fetching random question")
+        }
     }
 }
 

@@ -4,6 +4,8 @@ DROP TABLE IF EXISTS user_data;
 CREATE TABLE user_data (
     user_id INT GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(100) NOT NULL,
+    school_name VARCHAR(100) NOT NULL,
+    year_group INT NOT NULL,
     class VARCHAR(10) NOT NULL,
     email VARCHAR(150) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -12,9 +14,9 @@ CREATE TABLE user_data (
 
 );
 
-INSERT INTO user_data (name, class, email, password)
+INSERT INTO user_data (name, school_name, year_group, class, email, password)
 VALUES
- ('Oliver', '7C3', 'oliver@bjerg.co.uk', '3');
+ ('Oliver', 'Backwell School', 7 , '7C3', 'oliver@bjerg.co.uk', '3'); 
 
 DROP TABLE IF EXISTS ooo_question;
 
