@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose",
+    "test": "jest --verbose --watchAll --detectOpenHandles --runInBand",
     "setup-db": "node ./server/db/setup.js"
   },
   "repository": {
