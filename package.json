@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose",
+    "client-test": "jest --verbose client/__tests__/registration.test.js"
   },
   "repository": {
     "type": "git",
@@ -21,11 +22,13 @@
   "devDependencies": {
     "jest": "^30.3.0",
     "jsdom": "^29.0.1",
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "jest-each": "^28.1.3"
   },
   "dependencies": {
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "fs": "^0.0.1-security",
     "pg": "^8.20.0"
   }
 }
