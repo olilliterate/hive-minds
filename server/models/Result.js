@@ -9,7 +9,7 @@ class Result {
     }
     static async getAll() {
         
-        const resp = await db.query("SELECT user_data.name, result.streak, result.id, result.date, result.user_id FROM result LEFT JOIN user_date ON (user_data.user_id = result.user_id);");
+        const resp = await db.query("SELECT user_data.name, result.streak, result.id, result.date, result.user_id FROM result LEFT JOIN user_data ON (user_data.user_id = result.user_id);");
         if (resp.rows.length === 0) {
             throw new Error("No results available.")
         }
