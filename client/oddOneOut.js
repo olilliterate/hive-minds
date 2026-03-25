@@ -1,6 +1,4 @@
-// so need to use API to get question
-
-function runMCQ(question) {
+function runOOO(question) {
   return new Promise((resolve, reject) => {
     // destructure questions
     const {
@@ -42,4 +40,4 @@ function runMCQ(question) {
   });
 }
 
-module.exports = {runMCQ}
+module.exports = {runOOO}
