@@ -111,5 +111,28 @@ class User {
       row.role,
     );
   }
+  static async getById(userId) {
+    const result = await db.query(
+      "SELECT user_id, first_name, last_name, email, school, year_group, role FROM user_data WHERE user_id = $1",
+      [userId],
+    );
+
+    if (result.rows.length === 0) {
+      throw new Error("User not found");
+    }
+
+    const row = result.rows[0];
+
+    return new User(
+      row.user_id,
+      row.first_name,
+      row.last_name,
+      row.email,
+      null,
+      row.school,
+      row.year_group,
+      row.role,
+    );
+  }
 }
 module.exports = User;
