@@ -26,7 +26,7 @@ describe("User", () => {
       expect(result.email).toBe("john.doe@example.com");
 
       expect(db.query).toHaveBeenCalledWith(
-        "SELECT * FROM users WHERE email = $1",
+        "SELECT * FROM user_data WHERE email = $1",
         ["john.doe@example.com"],
       );
     });
@@ -55,7 +55,7 @@ describe("User", () => {
       jest.spyOn(db, "query").mockResolvedValueOnce({
         rows: [
           {
-            id: 2,
+            user_id: 2,
             first_name: "Jane",
             last_name: "Smith",
             email: "jane.smith@example.com",
@@ -70,7 +70,7 @@ describe("User", () => {
       const result = await User.create(newUser);
 
       expect(db.query).toHaveBeenCalledWith(
-        expect.stringContaining("INSERT INTO users"),
+        expect.stringContaining("INSERT INTO user_data"),
         [
           newUser.firstName,
           newUser.lastName,
@@ -103,7 +103,7 @@ describe("User", () => {
     it("should return a list of students", async () => {
       const mockRows = [
         {
-          id: 1,
+          user_id: 1,
           first_name: "John",
           last_name: "Doe",
           email: "john@test.com",
@@ -119,7 +119,7 @@ describe("User", () => {
       const students = await User.getStudents();
 
       expect(db.query).toHaveBeenCalledWith(
-        "SELECT * FROM users WHERE role = $1",
+        "SELECT * FROM user_data WHERE role = $1",
         ["student"],
       );
 
@@ -132,6 +132,38 @@ describe("User", () => {
       jest.spyOn(db, "query").mockResolvedValueOnce({ rows: [] });
 
       await expect(User.getStudents()).rejects.toThrow("No students found");
+    });
+  });
+  describe("User.getById", () => {
+    it("should return a user when found", async () => {
+      db.query.mockResolvedValue({
+        rows: [
+          {
+            user_id: 1,
+            first_name: "John",
+            last_name: "Doe",
+            email: "john@example.com",
+            school: "ABC School",
+            year_group: "10",
+            role: "student",
+          },
+        ],
+      });
+
+      const user = await User.getById(1);
+
+      expect(user).toBeDefined();
+      expect(user.user_id).toBe(1);
+      expect(user.firstName).toBe("John");
+      expect(user.lastName).toBe("Doe");
+    });
+
+    it("should throw error if user not found", async () => {
+      db.query.mockResolvedValue({
+        rows: [],
+      });
+
+      await expect(User.getById(999)).rejects.toThrow("User not found");
     });
   });
 });

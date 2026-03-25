@@ -22,7 +22,7 @@ class User {
   }
 
   static async getStudents() {
-    const result = await db.query("SELECT * FROM users WHERE role = $1", [
+    const result = await db.query("SELECT * FROM user_data WHERE role = $1", [
       "student",
     ]);
     if (result.rows.length === 0) {

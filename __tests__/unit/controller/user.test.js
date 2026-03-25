@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { register, login } = require("../../../server/controllers/user");
+const { register, login, getMe } = require("../../../server/controllers/user");
 const User = require("../../../server/models/User");
 
 jest.mock("bcrypt");
@@ -88,7 +88,7 @@ describe("User Controller", () => {
       };
 
       const mockUser = {
-        id: 1,
+        user_id: 1,
         email: "john@test.com",
         password: "hashedPassword",
         role: "student",
@@ -163,6 +163,48 @@ describe("User Controller", () => {
       User.getByEmail.mockRejectedValue(new Error("DB error"));
 
       await login(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        err: "DB error",
+      });
+    });
+  });
+  describe("getMe", () => {
+    it("should return user details", async () => {
+      req.user = { id: 1 };
+
+      const mockUser = {
+        user_id: 1,
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@test.com",
+        role: "student",
+      };
+
+      User.getById.mockResolvedValue(mockUser);
+
+      await getMe(req, res);
+
+      expect(User.getById).toHaveBeenCalledWith(1);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        id: 1,
+        name: "John Doe",
+        email: "john@test.com",
+        role: "student",
+      });
+    });
+
+    it("should return 500 if error occurs", async () => {
+      req.user = { id: 1 };
+
+      User.getById.mockRejectedValue(new Error("DB error"));
+
+      await getMe(req, res);
+
+      expect(User.getById).toHaveBeenCalledWith(1);
 
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
