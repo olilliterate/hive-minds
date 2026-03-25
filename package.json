@@ -4,7 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
     "test": "jest --watchAll --detectOpenHandles --runInBand --verbose"
+=======
+    "start": "node ./server/index.js",
+    "dev": "nodemon ./server/index.js",
+    "setup-db": "node ./server/db/setup.js",
+    "test": "jest --watchAll --detectOpenHandles --runInBand --verbose",
+    "setup-test-db": "NODE_ENV=test node ./database/setup.js",
+    "unitTests": "jest --testPathPattern=/unit/ --watchAll --verbose",
+    "integrationTests": "jest --testPathPatterns=/integration/ --watchAll --detectOpenHandles --runInBand --verbose",
+    "coverage": "jest --coverage --testPathPatterns=/unit/"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "./__tests__/integration/config.js"
+    ]
+>>>>>>> main
   },
   "repository": {
     "type": "git",
@@ -20,13 +36,22 @@
   "homepage": "https://github.com/olilliterate/hive-minds#readme",
   "devDependencies": {
     "jest": "^30.3.0",
+<<<<<<< HEAD
     "jest-environment-jsdom": "^29.7.0",
+=======
+    "jest-each": "^28.1.3",
+>>>>>>> main
     "jsdom": "^29.0.1",
     "nodemon": "^3.1.14"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "pg": "^8.20.0"
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.20.0",
+    "supertest": "^7.2.2"
   }
 }
