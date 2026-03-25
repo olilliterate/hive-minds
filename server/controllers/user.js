@@ -38,7 +38,7 @@ async function login(req, res) {
 
     const token = jwt.sign(
       {
-        id: user.id,
+        id: user.user_id,
         role: user.role,
       },
       process.env.SECRET_TOKEN,
@@ -48,6 +48,22 @@ async function login(req, res) {
     res.status(200).json({
       success: true,
       token,
+    });
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+}
+async function getMe(req, res) {
+  try {
+    const userId = req.user.id;
+
+    const user = await User.getById(userId);
+
+    res.status(200).json({
+      id: user.user_id,
+      name: user.firstName + " " + user.lastName,
+      email: user.email,
+      role: user.role,
     });
   } catch (err) {
     res.status(500).json({ err: err.message });
@@ -67,4 +83,5 @@ module.exports = {
   register,
   login,
   getStudents,
+  getMe,
 };
