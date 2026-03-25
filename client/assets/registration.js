@@ -1,12 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("registerForm");
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     let isValid = true;
 
-    // Inputs (ELEMENTS, not values)
     const firstName = document.getElementById("firstName");
     const lastName = document.getElementById("lastName");
     const email = document.getElementById("email");
@@ -14,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const school = document.getElementById("school");
     const className = document.getElementById("className");
 
-    // Values
     const firstNameVal = firstName.value.trim();
     const lastNameVal = lastName.value.trim();
     const emailVal = email.value.trim();
@@ -22,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const schoolVal = school.value.trim();
     const classVal = className.value.trim();
 
-    // Clear previous errors
+    // Clear errors
     document
       .querySelectorAll(".invalid-feedback")
       .forEach((el) => (el.innerText = ""));
@@ -30,14 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
       input.classList.remove("is-invalid", "is-valid");
     });
 
-    // ===== VALIDATION =====
-
-    if (firstNameVal === "") {
+    // Validation
+    if (!firstNameVal) {
       setError(firstName, "First name is required");
       isValid = false;
     } else setSuccess(firstName);
 
-    if (lastNameVal === "") {
+    if (!lastNameVal) {
       setError(lastName, "Last name is required");
       isValid = false;
     } else setSuccess(lastName);
@@ -48,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
       isValid = false;
     } else setSuccess(email);
 
-    if (passwordVal === "") {
+    if (!passwordVal) {
       setError(password, "Password is required");
       isValid = false;
     } else if (passwordVal.length < 6) {
@@ -56,56 +53,58 @@ document.addEventListener("DOMContentLoaded", () => {
       isValid = false;
     } else setSuccess(password);
 
-    if (schoolVal === "") {
+    if (!schoolVal) {
       setError(school, "School name is required");
       isValid = false;
     } else setSuccess(school);
 
-    if (classVal === "") {
+    if (!classVal) {
       setError(className, "Class / Year is required");
       isValid = false;
     } else setSuccess(className);
 
-    // Role
     const role = document.querySelector('input[name="role"]:checked');
     if (!role) {
       alert("Please select a role");
       isValid = false;
     }
 
-    // If all validations pass, save user to localStorage
     if (isValid) {
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-
       const newUser = {
         firstName: firstNameVal,
         lastName: lastNameVal,
         email: emailVal,
         password: passwordVal,
         school: schoolVal,
-        className: classVal,
+        yearGroup: classVal,
         role: role.value,
       };
 
-      // Check if user exists
-      const existingUser = users.find((u) => u.email === emailVal);
-      if (existingUser) {
-        setError(email, "User already exists");
-        return;
+      try {
+        const response = await fetch("http://localhost:5000/users/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        });
+
+        const data = await response.json();
+
+        if (response.status === 201) {
+          alert("Registration successful");
+          window.location.assign("login.html");
+        } else {
+          alert(data.err || "Registration failed");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("Server error. Please try again later.");
       }
-
-      users.push(newUser);
-      localStorage.setItem("users", JSON.stringify(users));
-
-      alert("Registration successful - you can now log in!");
-
-      //connect with backend here in future
 
       form.reset();
     }
   });
-
-  // HELPER FUNCTIONS FOR SETTING ERRORS AND SUCCESS STATES
 
   function setError(input, message) {
     input.classList.add("is-invalid");

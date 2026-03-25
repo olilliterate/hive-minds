@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 function authenticator(req, res, next) {
-  const token = req.headers["authorization"];
+  const authHeader = req.headers["authorization"];
+  const token = authHeader.split(" ")[1];
 
   if (token) {
-    jwt.verify(token, process.env.SECRET_TOKEN, (err, data) => {
+    jwt.verify(token, process.env.SECRET_TOKEN, (err, decoded) => {
       if (err) {
         res.status(403).json({ err: "Invalid token" });
       } else {
