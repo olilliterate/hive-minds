@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
     "setup-db": "node ./server/db/setup.js",
     "test": "jest --watchAll --detectOpenHandles --runInBand --verbose",
     "setup-test-db": "NODE_ENV=test node ./database/setup.js",
@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "fs": "^0.0.1-security",
