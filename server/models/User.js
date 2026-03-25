@@ -2,7 +2,7 @@ const db = require("../db/connect");
 
 class User {
   constructor(
-    id,
+    user_id,
     firstName,
     lastName,
     email,
@@ -11,7 +11,7 @@ class User {
     yearGroup,
     role,
   ) {
-    this.id = id;
+    this.user_id = user_id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
@@ -32,7 +32,7 @@ class User {
     return result.rows.map(
       (row) =>
         new User(
-          row.id,
+          row.user_id,
           row.first_name,
           row.last_name,
           row.email,
@@ -45,7 +45,7 @@ class User {
   }
 
   static async getByEmail(email) {
-    const result = await db.query("SELECT * FROM users WHERE email = $1", [
+    const result = await db.query("SELECT * FROM user_data WHERE email = $1", [
       email,
     ]);
 
@@ -56,7 +56,7 @@ class User {
     const row = result.rows[0];
 
     return new User(
-      row.id,
+      row.user_id,
       row.first_name,
       row.last_name,
       row.email,
@@ -81,9 +81,17 @@ class User {
     ) {
       throw new Error("All fields are required");
     }
+    const existingUser = await db.query(
+      "SELECT * FROM user_data WHERE email = $1",
+      [email],
+    );
+
+    if (existingUser.rows.length > 0) {
+      throw new Error("User already exists");
+    }
 
     const result = await db.query(
-      `INSERT INTO users 
+      `INSERT INTO user_data 
     (first_name, last_name, email, password, school, year_group, role) 
     VALUES ($1, $2, $3, $4, $5, $6, $7) 
     RETURNING *`,
@@ -93,7 +101,7 @@ class User {
     const row = result.rows[0];
 
     return new User(
-      row.id,
+      row.user_id,
       row.first_name,
       row.last_name,
       row.email,
