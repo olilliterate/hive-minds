@@ -9,8 +9,8 @@ const { startGameLoop,
 	showResults,
 	resetCounter,
 	getCounter,
-	chooseGame } = require("../../client/gameLoop")
-    const { runMCQ } = require("../../client/mcq")
+	chooseGame } = require("../../../client/gameLoop")
+    const { runMCQ } = require("../../../client/mcq")
 
 describe("Game Loop logic tests", () => {
   // need before each to reset the counter

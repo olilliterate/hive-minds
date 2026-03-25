@@ -1,6 +1,6 @@
 const {runMCQ} = require("./mcq")
-const { runOddOneOut } = require()
-const { runPictureQuestion} = require()
+const { runOOO} = require("./oddOneOut")
+const { runImage } = require("./picture")
 
 function chooseGame(previousGameId) {
   pass;
