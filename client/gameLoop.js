@@ -75,6 +75,13 @@ function getCounter() {
   return counter;
 }
 
+function postScore() {
+	// use getme to get userid 
+	// capture counter and use as streak
+
+	
+}
+
 // start game play
 let previousGameId = null; //add .push() so you can keep track of all of the id and table it came from
 // object has keys for all the game types and the value is an array of the IDs
