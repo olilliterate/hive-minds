@@ -2,6 +2,7 @@ if (typeof require !== "undefined") {
   const { runMCQ } = require("./mcq");
   const { runOOO } = require("./oddOneOut");
   const { runImage } = require("./picture");
+  const { runFlashcard } = require("./flashcard")
 }
 
 // think this is happening backend now, so need to think about extracting the key to tell me which game to choose
@@ -17,6 +18,7 @@ const gameDispatcher = {
   mcq: runMCQ,
   ooo: runOOO,
   picture: runImage,
+  flashcard: runFlashcard
 };
 
 function chosenGame(gameType, gameQuestion) {
