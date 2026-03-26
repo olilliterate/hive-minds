@@ -7,9 +7,9 @@ describe("Result", () => {
         it("Resolve with all Results on a successful db query", async () => {
             //Arrange
             const mockResults = [
-                { user_id: 1, name: "Test 1", streak: 40, date: "2026-03-24 11:22:10.729" },
-                { user_id: 2, name: "Test 2", streak: 50, date: "2226-03-24 11:22:10.729" },
-                { user_id: 3, name: "Test 3", streak: 60, date: "2126-03-24 11:22:10.729" }
+                { user_id: 1, first_name: "Test 1", streak: 40, date: "2026-03-24 11:22:10.729" },
+                { user_id: 2, first_name: "Test 2", streak: 50, date: "2226-03-24 11:22:10.729" },
+                { user_id: 3, first_name: "Test 3", streak: 60, date: "2126-03-24 11:22:10.729" }
             ]
             jest.spyOn(db, "query").mockResolvedValueOnce({rows: mockResults});
             // Act
@@ -18,8 +18,8 @@ describe("Result", () => {
             // Assert
             expect(results).toHaveLength(3);
             expect(results[0]).toHaveProperty('id');
-            expect(results[0].name).toBe('Test 1');
-            expect(db.query).toHaveBeenCalledWith("SELECT user_data.name, result.streak, result.id, result.date, result.user_id FROM result LEFT JOIN user_data ON (user_data.user_id = result.user_id);")
+            expect(results[0].first_name).toBe('Test 1');
+            expect(db.query).toHaveBeenCalledWith("SELECT user_data.first_name, result.streak, result.id, result.date, result.user_id FROM result LEFT JOIN user_data ON (user_data.user_id = result.user_id);")
         })
         it("should throw an Error when no results are found", async () => {
             //Arrange

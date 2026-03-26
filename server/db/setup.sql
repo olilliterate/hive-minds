@@ -101,7 +101,24 @@ VALUES
  ('Term 1', 'Def 1', 'The tests'),
  ('Term 2', 'Def 2', 'The tests'),
  ('Term 3', 'Def 3', 'The tests'),
- ('Term 4', 'Def 4', 'The tests');
+ ('Term 4', 'Def 4', 'The tests'),
+ ('river', 'a river is a flowing body of water that moves towards the sea', 'rivers'),
+ ('source', 'the place where a river begins', 'rivers'),
+ ('mouth', 'the place where a river meets the sea or another river', 'rivers'),
+ ('tributary', 'a smaller river that joins a larger river', 'rivers'),
+ ('weather', 'the day to day conditions of the atmosphere', 'weather'),
+ ('climate', 'the average weather conditions over a long period of time', 'weather'),
+ ('precipitation', 'water that falls from the sky such as rain or snow', 'weather'),
+ ('temperature', 'how hot or cold the air is', 'weather'),
+ ('population', 'the number of people living in a place', 'population'),
+ ('urban', 'an area with a high number of buildings and people', 'population'),
+ ('rural', 'an area with few people and lots of open space', 'population'),
+ ('migration', 'the movement of people from one place to another', 'population'),
+ ('map', 'a drawing of an area showing features and locations', 'map skills'),
+ ('compass', 'a tool used to find direction', 'map skills'),
+ ('scale', 'shows how distances on a map relate to real life', 'map skills'),
+ ('grid reference', 'a way of finding exact locations on a map', 'map skills');
+
 
 
 

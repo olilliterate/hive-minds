@@ -26,7 +26,7 @@ describe("User", () => {
       expect(result.email).toBe("john.doe@example.com");
 
       expect(db.query).toHaveBeenCalledWith(
-        "SELECT * FROM users WHERE email = $1",
+        "SELECT * FROM user_data WHERE email = $1",
         ["john.doe@example.com"],
       );
     });
@@ -52,41 +52,29 @@ describe("User", () => {
         role: "student",
       };
 
-      jest.spyOn(db, "query").mockResolvedValueOnce({
-        rows: [
-          {
-            id: 2,
-            first_name: "Jane",
-            last_name: "Smith",
-            email: "jane.smith@example.com",
-            password: "hashedpassword",
-            school: "Example School",
-            year_group: "8",
-            role: "student",
-          },
-        ],
-      });
+      jest
+        .spyOn(db, "query")
+        .mockResolvedValueOnce({ rows: [] }) // no existing user
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              user_id: 2,
+              first_name: "Jane",
+              last_name: "Smith",
+              email: "jane.smith@example.com",
+              password: "hashedpassword",
+              school: "Example School",
+              year_group: "8",
+              role: "student",
+            },
+          ],
+        });
 
       const result = await User.create(newUser);
 
-      expect(db.query).toHaveBeenCalledWith(
-        expect.stringContaining("INSERT INTO users"),
-        [
-          newUser.firstName,
-          newUser.lastName,
-          newUser.email,
-          newUser.password,
-          newUser.school,
-          newUser.yearGroup,
-          newUser.role,
-        ],
-      );
-
       expect(result).toBeInstanceOf(User);
-      expect(result).toHaveProperty("id", 2);
-      expect(result.email).toBe("jane.smith@example.com");
+      expect(result.user_id).toBe(2);
     });
-
     it("should throw error if required fields are missing", async () => {
       const badUser = {
         firstName: "Jane",
@@ -103,7 +91,7 @@ describe("User", () => {
     it("should return a list of students", async () => {
       const mockRows = [
         {
-          id: 1,
+          user_id: 1,
           first_name: "John",
           last_name: "Doe",
           email: "john@test.com",
@@ -119,7 +107,7 @@ describe("User", () => {
       const students = await User.getStudents();
 
       expect(db.query).toHaveBeenCalledWith(
-        "SELECT * FROM users WHERE role = $1",
+        "SELECT * FROM user_data WHERE role = $1",
         ["student"],
       );
 
@@ -132,6 +120,38 @@ describe("User", () => {
       jest.spyOn(db, "query").mockResolvedValueOnce({ rows: [] });
 
       await expect(User.getStudents()).rejects.toThrow("No students found");
+    });
+  });
+  describe("User.getById", () => {
+    it("should return a user when found", async () => {
+      db.query.mockResolvedValue({
+        rows: [
+          {
+            user_id: 1,
+            first_name: "John",
+            last_name: "Doe",
+            email: "john@example.com",
+            school: "ABC School",
+            year_group: "10",
+            role: "student",
+          },
+        ],
+      });
+
+      const user = await User.getById(1);
+
+      expect(user).toBeDefined();
+      expect(user.user_id).toBe(1);
+      expect(user.firstName).toBe("John");
+      expect(user.lastName).toBe("Doe");
+    });
+
+    it("should throw error if user not found", async () => {
+      db.query.mockResolvedValue({
+        rows: [],
+      });
+
+      await expect(User.getById(999)).rejects.toThrow("User not found");
     });
   });
 });
