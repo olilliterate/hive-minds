@@ -1,8 +1,30 @@
+
 if (typeof require !== "undefined") {
   const { runMCQ } = require("./mcq");
   const { runOOO } = require("./oddOneOut");
   const { runImage } = require("./picture");
   const { runFlashcard } = require("./flashcard")
+}
+
+const mockQuestion = {
+    question_body: "What is the capital of France?",
+    correct_answer: "Paris",
+    prompt_1: "London",
+    prompt_2: "Berlin",
+    prompt_3: "Madrid",
+    prompt_4: "Paris",
+  }
+
+const mockReturn = {
+  game_type: "mcq",
+  game_content: {
+    question_body: "What is the capital of France?",
+    correct_answer: "Paris",
+    prompt_1: "London",
+    prompt_2: "Berlin",
+    prompt_3: "Madrid",
+    prompt_4: "Paris"
+  }
 }
 
 // think this is happening backend now, so need to think about extracting the key to tell me which game to choose
@@ -14,24 +36,61 @@ function getGame(previousGameId) {
 // i need to feed it the argument
 // so maybe changing to a function and cahining the parameter into a method
 // so needs to take in 2 params gameType and question
+/*
 const gameDispatcher = {
   mcq: runMCQ,
   ooo: runOOO,
   picture: runImage,
-  flashcard: runFlashcard
+  flash: runFlashcard
 };
+
 
 function chosenGame(gameType, gameQuestion) {
 
-  gameDispatcher[gameType]?.(question)
+  return gameDispatcher[gameType](gameQuestion)
+}
+*/
+function alternativeGetGame(playedObj = {mockReturn}) {
+  const game = mockReturn     //await fetch(...)
+  
+  if (game_type == "mcq") {
+      runMCQ(game_content)
+    }
+
+  if (game.ok) {
+    const question = mockReturn
+
+    const {game_type, game_content } = question
+
+    if (game_type == "ooo") {
+      runOOO(game_content)
+    }
+    else if (game_type == "mcq") {
+      runMCQ(game_content)
+    }
+
+    else if (game_type == "picture") {
+      runImage(game_content)
+    }
+
+    else if (game_type == "flash") {
+      runFlashcard(game_content)
+    }
+
+    else { console.log("Unknown game type")}
+  } else {
+    console.log("game")
+  }
 
 }
+
+
 
 function clearGameBoard() {
   const node = document.querySelector(".game-board");
   node.innerHTML = "";
 }
-
+/*
 function postResults(studentResults) { // do they want object or just array
   return [me(), counter]
   pass
@@ -89,7 +148,7 @@ function showResults(counter, getLeaderboard) {
 
   gameBoard.appendChild(table);
 }
-
+*/
 function endGame() {
   postResults()
   clearGameBoard();
@@ -119,20 +178,20 @@ function startGameLoop() {
   // load a game
   // consider clearing game logic
   //const { chosenGame, gameId } = chooseGame(previousGameId);
-  previousGameId = gameId;
+  //previousGameId = gameId;
   clearGameBoard();
 
   // run the choosen game
 
-  runGame(chosenGame(), (result) => {
-    // callback needs to return something
-    if (result === "correct") {
+  //const result = chosenGame("mcq", mockQuestion)
+  const result = alternativeGetGame()
+
+  if (result === "correct") {
       counter += 1;
       startGameLoop();
     } else {
-      endGame();
+      console.log("gameover") //endGame();
     }
-  });
 }
 
 if (typeof module !== "undefined") {
@@ -143,6 +202,7 @@ if (typeof module !== "undefined") {
     showResults,
     resetCounter,
     getCounter,
+    //gameDispatcher,
     //chooseGame,
   };
 }

@@ -46,4 +46,9 @@ function runFlashcard(card) {
   });
 }
 
-module.exports = { runFlashcard };
+
+if (typeof module !== "undefined") {
+  module.exports = { runFlashcard };
+}
+
+
