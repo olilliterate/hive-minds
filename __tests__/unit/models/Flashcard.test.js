@@ -1,123 +1,86 @@
 const db = require("../../../server/db/connect");
 const Flashcard = require("../../../server/models/Flashcard");
+const randomFunction = require("../../../helpers/randomChoice");
+
+jest.mock("../../../helpers/randomChoice", () => jest.fn());
 
 describe("Flashcard", () => {
   beforeEach(() => jest.clearAllMocks());
   afterAll(() => jest.resetAllMocks());
-  // getRandomCluster
+
   describe("getRandomCluster", () => {
     it("should return a random cluster", async () => {
-      // Arrange
       jest.spyOn(db, "query").mockResolvedValueOnce({
-        rows: [{ cluster: "Geography" }],
+        rows: [{ cluster: "Geography" }, { cluster: "History" }],
       });
 
-      // Act
+      randomFunction.mockReturnValue("Geography");
+
       const result = await Flashcard.getRandomCluster();
 
-      // Assert
       expect(result).toBe("Geography");
+
       expect(db.query).toHaveBeenCalledWith(
-        `SELECT cluster
-   FROM (SELECT DISTINCT cluster FROM flashcard) AS clusters
-   ORDER BY RANDOM()
-   LIMIT 1`,
+        `SELECT DISTINCT cluster FROM flashcard;`,
       );
+
+      expect(randomFunction).toHaveBeenCalledWith(["Geography", "History"]);
     });
 
     it("should throw an error when no clusters exist", async () => {
-      // Arrange
       jest.spyOn(db, "query").mockResolvedValueOnce({ rows: [] });
 
-      // Assert
       await expect(Flashcard.getRandomCluster()).rejects.toThrow(
         "No clusters found",
       );
     });
-  });
 
-  // getCardsByCluster
-  describe("getCardsByCluster", () => {
-    it("should return 4 flashcards for a cluster", async () => {
-      // Arrange
-      const mockRows = [
-        { fc_id: 1, term: "T1", def: "D1", cluster: "Geo" },
-        { fc_id: 2, term: "T2", def: "D2", cluster: "Geo" },
-        { fc_id: 3, term: "T3", def: "D3", cluster: "Geo" },
-        { fc_id: 4, term: "T4", def: "D4", cluster: "Geo" },
-      ];
+    it("should throw error when all clusters are used", async () => {
+      jest.spyOn(db, "query").mockResolvedValueOnce({
+        rows: [{ cluster: "Geography" }],
+      });
 
-      jest.spyOn(db, "query").mockResolvedValueOnce({ rows: mockRows });
-
-      // Act
-      const result = await Flashcard.getCardsByCluster("Geo");
-
-      // Assert
-      expect(result.length).toBe(4);
-      expect(result[0]).toBeInstanceOf(Flashcard);
-      expect(result[0].term).toBe("T1");
-
-      expect(db.query).toHaveBeenCalledWith(
-        `SELECT * FROM flashcard
-       WHERE cluster = $1
-       ORDER BY RANDOM()
-       LIMIT $2`,
-        ["Geo", 4],
-      );
-    });
-
-    it("should throw error when no flashcards found", async () => {
-      // Arrange
-      jest.spyOn(db, "query").mockResolvedValueOnce({ rows: [] });
-
-      // Assert
-      await expect(Flashcard.getCardsByCluster("Geo")).rejects.toThrow(
-        "No flashcards found for cluster",
+      await expect(Flashcard.getRandomCluster(["Geography"])).rejects.toThrow(
+        "Out of games",
       );
     });
   });
-
-  // getRandomClusterGame
   describe("getRandomClusterGame", () => {
     it("should return cluster and cards", async () => {
-      // Arrange
-      const mockCluster = "History";
-      const mockCards = [
-        new Flashcard({
-          fc_id: 1,
-          term: "T1",
-          def: "D1",
-          cluster: "History",
-        }),
-      ];
-
       jest
         .spyOn(Flashcard, "getRandomCluster")
-        .mockResolvedValueOnce(mockCluster);
+        .mockResolvedValueOnce("History");
 
-      jest
-        .spyOn(Flashcard, "getCardsByCluster")
-        .mockResolvedValueOnce(mockCards);
+      jest.spyOn(db, "query").mockResolvedValueOnce({
+        rows: [
+          {
+            fc_id: 1,
+            term: "T1",
+            def: "D1",
+            cluster: "History",
+          },
+        ],
+      });
 
-      // Act
-      const result = await Flashcard.getRandomClusterGame();
+      const result = await Flashcard.getRandomClusterGame([]);
 
-      // Assert
       expect(result.cluster).toBe("History");
-      expect(result.cards).toEqual(mockCards);
 
-      expect(Flashcard.getRandomCluster).toHaveBeenCalled();
-      expect(Flashcard.getCardsByCluster).toHaveBeenCalledWith(mockCluster, 4);
+      expect(result.cards).toHaveLength(1);
+      expect(result.cards[0]).toBeInstanceOf(Flashcard);
+
+      expect(db.query).toHaveBeenCalledWith(
+        expect.stringContaining("SELECT * FROM flashcard"),
+        ["History"],
+      );
     });
 
-    it("should throw error if cluster fetch fails", async () => {
-      // Arrange
+    it("should throw error if getRandomCluster fails", async () => {
       jest
         .spyOn(Flashcard, "getRandomCluster")
         .mockRejectedValueOnce(new Error("DB error"));
 
-      // Assert
-      await expect(Flashcard.getRandomClusterGame()).rejects.toThrow(
+      await expect(Flashcard.getRandomClusterGame([])).rejects.toThrow(
         "DB error",
       );
     });

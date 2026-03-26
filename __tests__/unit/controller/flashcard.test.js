@@ -43,7 +43,7 @@ describe("Flashcard Controller", () => {
       expect(res.status).toHaveBeenCalledWith(200);
 
       expect(res.json).toHaveBeenCalledWith({
-        formatted: {
+        body: {
           cluster: "Geography",
           cards: [
             { term: "France", definition: "Paris" },

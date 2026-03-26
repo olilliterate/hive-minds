@@ -1,4 +1,5 @@
 const db = require("../db/connect");
+const randomFunction = require("../../helpers/randomChoice");
 
 class Flashcard {
   constructor(row) {
@@ -8,40 +9,36 @@ class Flashcard {
     this.cluster = row.cluster;
   }
 
-  static async getRandomCluster() {
-    const result = await db.query(
-      `SELECT cluster
-   FROM (SELECT DISTINCT cluster FROM flashcard) AS clusters
-   ORDER BY RANDOM()
-   LIMIT 1`,
-    );
+  static async getRandomCluster(usedClusterNames = []) {
+    const result = await db.query(`SELECT DISTINCT cluster FROM flashcard;`);
 
     if (result.rows.length === 0) {
       throw new Error("No clusters found");
     }
 
-    return result.rows[0].cluster;
-  }
+    const clusters = result.rows
+      .map((row) => row.cluster)
+      .filter((cluster) => !usedClusterNames.includes(cluster));
 
-  static async getCardsByCluster(cluster, limit = 4) {
-    const result = await db.query(
-      `SELECT * FROM flashcard
-       WHERE cluster = $1
-       ORDER BY RANDOM()
-       LIMIT $2`,
-      [cluster, limit],
-    );
-
-    if (result.rows.length === 0) {
-      throw new Error("No flashcards found for cluster");
+    if (clusters.length === 0) {
+      throw new Error("Out of games");
     }
 
-    return result.rows.map((row) => new Flashcard(row));
+    return randomFunction(clusters);
   }
 
-  static async getRandomClusterGame() {
-    const cluster = await this.getRandomCluster();
-    const cards = await this.getCardsByCluster(cluster, 4);
+  static async getRandomClusterGame(usedClusterNames) {
+    const cluster = await this.getRandomCluster(usedClusterNames);
+
+    const result = await db.query(
+      `SELECT * FROM flashcard
+     WHERE cluster = $1
+     ORDER BY RANDOM()
+     LIMIT 4`,
+      [cluster],
+    );
+
+    const cards = result.rows.map((row) => new Flashcard(row));
 
     return {
       cluster,
@@ -49,5 +46,4 @@ class Flashcard {
     };
   }
 }
-
 module.exports = Flashcard;
