@@ -7,6 +7,7 @@ const path = require("path");
 const userRoutes = require("./routes/user");
 const resultRoutes = require("./routes/result");
 const mcqRoutes = require("./routes/mcq");
+const gamesRoutes = require('./routes/games')
 const flashcardRoutes = require("./routes/flashcard");
 
 //Define app is an express application
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname, "../client")));
 app.use("/user", userRoutes);
 app.use("/result", resultRoutes);
 app.use("/mcq", mcqRoutes);
+app.use("/games", gamesRoutes);
 app.use("/flashcard", flashcardRoutes);
 
 app.get("/", (req, res) => {

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const listOfQuestions = require('./mcqQuestionsData');
+const listOfQuestions = require('./flash');
 
 console.log(listOfQuestions);
 
@@ -8,7 +8,7 @@ if (fs.existsSync('formatted.txt')) {
 }
 
 listOfQuestions.map((ele) => {
-    const line =` ('${ele.type}', '${ele.question_body}', '${ele.answer}', '${ele.prompt_one}', '${ele.prompt_two}', '${ele.prompt_three}', '${ele.prompt_four}'),\n`
+    const line =` ('${ele.term}', '${ele.definition}', '${ele.cluster}'),\n`
     fs.appendFileSync('formatted.txt', line, 'utf-8');
 })
 
