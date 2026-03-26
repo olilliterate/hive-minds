@@ -1,9 +1,7 @@
 # Beat the Hive
-
 Can you best the hive and rise to queen bee in this fun educational geography game?
 
 ## Features:
-
 - An api to fetch fun geography games of various types
 - User authentication and authorization so users accounts and information is safe and secure
 - A collection of educational microgames which allows you to build up a streak
@@ -19,6 +17,10 @@ In order to install and run this project you need the following prerequisites:
 
 ### Steps:
 
+In order to install and run this project you need the following prerequisites:
+- Node version of `24.13` upwards
+
+### Steps:
 1. Find a location on your computer you want to store the project the `git clone` our repository
 2. Navigate to the repository on your computer and run `npm i` to install dependencies
 3. Create a postgresql database and copy your transaction pooler link into a .env file with the key `DB_URL`
@@ -57,5 +59,6 @@ name, last name, email, password, school, year group and role
 - Interactive effect on streak extension and streak failure
 
 ## Known issues
+
 
 It is a bit buggy in general
