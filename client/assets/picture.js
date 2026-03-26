@@ -3,7 +3,7 @@ function runImage(question) {
     // destructure questions
     const {
       question_body,
-      incorrect_answer,
+      correct_answer,
       prompt_1, //these prompts should hodepfully be imgURL
       prompt_2,
       prompt_3,
@@ -34,7 +34,7 @@ function runImage(question) {
       // add even listener for each one
       // needs to be for only these buttons
       button.addEventListener("click", () => {
-        resolve(option === incorrect_answer ? "correct" : "wrong");
+        resolve(option === correct_answer ? "correct" : "wrong");
       });
 
       gameBoard.appendChild(button);

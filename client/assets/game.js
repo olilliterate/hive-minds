@@ -9,7 +9,6 @@ if (typeof require !== "undefined") {
 document.querySelector("#startGame").addEventListener("click", async () => {
   document.querySelector(".game-board").classList.remove("d-none");
   console.log("I work right");
-  console.log(mockReturn)
   await startGameLoop();
 });
 

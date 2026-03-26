@@ -3,18 +3,27 @@
  */
 
 // import functions
-const { startGameLoop,
-	endGame,
-	clearGameBoard,
-	showResults,
-	resetCounter,
-	getCounter,
-	chooseGame } = require("../../../client/gameLoop")
-    const { runMCQ } = require("../../../client/mcq")
+const {
+  alternativeGetGame,
+  clearGameBoard,
+  postResults,
+  getLeaderboard,
+  showResults,
+  endGame,
+  resetCounter,
+  startGameLoop,
+} = require("../../../client/assets/gameLoop");
 
 describe("Game Loop logic tests", () => {
+
+  //const mockMCQ = jest.fn().mockResolvedValue("correct")
+  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    document.body.innerHTML = "<div class='game-board'></div>"
+    resetCounter()
+  });
   // need before each to reset the counter
-/* not needed yet
+  /* not needed yet
   test("chosen returns a valid game on first call", () => {
     //Arrange and Act
     const result = chooseGame(null);
@@ -44,14 +53,14 @@ describe("Game Loop logic tests", () => {
     // need to use jest spy
     // TODO: emulate DOM for end game
     // TODO: decide if this needs to be split up
+    document;
+    const clearSpy = jest.spyOn(gameLoop, "clearGameBoard");
+    const showSpy = jest.spyOn(gameLoop, "showResults");
 
-    const clearSpy = jest.spyOn(startGameLoop, "clearGameBoard");
-    const resultsSpy = jest.spyOn(startGameLoop, "showResults");
-
-    endGame();
+    gameLoop.endGame();
 
     expect(clearSpy).toHaveBeenCalled();
-    expect(resultsSpy).toHaveBeenCalled();
+    expect(showSpy).toHaveBeenCalled();
   });
 
   test("showResults calls getLeaderboard and redners score", () => {
@@ -77,65 +86,9 @@ describe("Game Loop logic tests", () => {
     // need DOM pieces
     // can you just write DOM structures in JS?
     //arranfe
-    document.body.innerHTML = `
-    <div class = 'game-board'>
-        <div class='game-part'></div>
-    </div>`;
     // act
     clearGameBoard();
     //assert
     expect(document.querySelector(".game-board").innerHTML).toBe("");
   });
 });
-
-describe("MCQ tests", () => {
-  const mockQuestion = {
-    question_body: "What is the capital of France?",
-    correct_answer: "Paris",
-    prompt_1: "London",
-    prompt_2: "Berlin",
-    prompt_3: "Madrid",
-    prompt_4: "Paris",
-  };
-
-  beforeEach(() => jest.clearAllMocks());
-  beforeEach(
-    () => (document.body.innerHTML = "<div class = 'game-board'></div>"),
-  );
-  afterEach;
-
-  test("returns correct when correct is clicked", async () => {
-    // when answered correctly it should return back "correct"
-  // we did mocking with DOM elements
-
-  //arange
-  const resultPromise = runMCQ(mockQuestion)
-
-  const buttons = document.querySelectorAll("button")
-  const correctButton = Array.from(buttons).find((b) => b.textContent === "Paris")
-  
-  //act
-  correctButton.click()
-
-  //assert
-  const result = await resultPromise
-  expect(result).toBe("correct")
-  });
-  
-
-  test("retrun wrong when wrong", async () => {
-    const resultPromise = runMCQ(mockQuestion)
-
-  const buttons = document.querySelectorAll("button")
-  const correctButton = Array.from(buttons).find((b) => b.textContent === "London")
-  
-  //act
-  correctButton.click()
-
-  //assert
-  const result = await resultPromise
-  expect(result).toBe("wrong")
-  });
-});
-
-// get random game,
