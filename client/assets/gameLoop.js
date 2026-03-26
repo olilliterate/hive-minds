@@ -1,19 +1,18 @@
-
 if (typeof require !== "undefined") {
   const { runMCQ } = require("./mcq");
   const { runOOO } = require("./oddOneOut");
   const { runImage } = require("./picture");
-  const { runFlashcard } = require("./flashcard")
+  const { runFlashcard } = require("./flashcard");
 }
 
 const mockQuestion = {
-    question_body: "What is the capital of France?",
-    correct_answer: "Paris",
-    prompt_1: "London",
-    prompt_2: "Berlin",
-    prompt_3: "Madrid",
-    prompt_4: "Paris",
-  }
+  question_body: "What is the capital of France?",
+  correct_answer: "Paris",
+  prompt_1: "London",
+  prompt_2: "Berlin",
+  prompt_3: "Madrid",
+  prompt_4: "Paris",
+};
 
 const mockReturn = {
   game_type: "mcq",
@@ -23,9 +22,18 @@ const mockReturn = {
     prompt_1: "London",
     prompt_2: "Berlin",
     prompt_3: "Madrid",
-    prompt_4: "Paris"
-  }
-}
+    prompt_4: "Paris",
+  },
+};
+
+const result = [
+  {name: "Obi", score: 99, date: "26/03/2026"},
+  {name: "Charlie", score: 2, date: "01/01/2000"}
+]
+
+let previousGameId = null; //add .push() so you can keep track of all of the id and table it came from
+// object has keys for all the game types and the value is an array of the IDs
+let counter = 0;
 
 // think this is happening backend now, so need to think about extracting the key to tell me which game to choose
 
@@ -36,67 +44,41 @@ function getGame(previousGameId) {
 // i need to feed it the argument
 // so maybe changing to a function and cahining the parameter into a method
 // so needs to take in 2 params gameType and question
-/*
+
 const gameDispatcher = {
   mcq: runMCQ,
   ooo: runOOO,
   picture: runImage,
-  flash: runFlashcard
+  flash: runFlashcard,
 };
 
-
+/*
 function chosenGame(gameType, gameQuestion) {
 
   return gameDispatcher[gameType](gameQuestion)
 }
 */
-function alternativeGetGame(playedObj = {mockReturn}) {
-  const game = mockReturn     //await fetch(...)
-  
-  if (game_type == "mcq") {
-      runMCQ(game_content)
-    }
-
-  if (game.ok) {
-    const question = mockReturn
-
-    const {game_type, game_content } = question
-
-    if (game_type == "ooo") {
-      runOOO(game_content)
-    }
-    else if (game_type == "mcq") {
-      runMCQ(game_content)
-    }
-
-    else if (game_type == "picture") {
-      runImage(game_content)
-    }
-
-    else if (game_type == "flash") {
-      runFlashcard(game_content)
-    }
-
-    else { console.log("Unknown game type")}
-  } else {
-    console.log("game")
-  }
-
+async function alternativeGetGame(playedObj = { mockReturn }) {
+  const { game_type, game_content } = mockReturn;
+  return await gameDispatcher[game_type](game_content);
 }
-
-
 
 function clearGameBoard() {
   const node = document.querySelector(".game-board");
   node.innerHTML = "";
 }
-/*
+
 function postResults(studentResults) { // do they want object or just array
   return [me(), counter]
   pass
 }
 
-function showResults(counter, getLeaderboard) {
+async function getLeaderboard() {
+  return results
+}
+
+
+async function showResults() {
   // get request for leaderboard
 
   const gameBoard = document.querySelector(".game-board");
@@ -125,7 +107,7 @@ function showResults(counter, getLeaderboard) {
   // rows
   const tableBody = document.createElement("tbody");
 
-  getLeaderboard.forEach((item) => {
+  await getLeaderboard.forEach((item) => {
     const row = document.createElement("tr");
 
     // tabke contents
@@ -148,10 +130,12 @@ function showResults(counter, getLeaderboard) {
 
   gameBoard.appendChild(table);
 }
-*/
-function endGame() {
-  postResults()
+
+async function endGame() {
+  //postResults();
+  console.log("gameover", counter)
   clearGameBoard();
+  resetCounter
   showResults(counter, getLeaderboard);
 }
 
@@ -159,21 +143,10 @@ function resetCounter() {
   return (counter = 0);
 }
 
-function getCounter() {
-  return counter;
-}
-
-function postScore() {
-  // use getme to get userid
-  // capture counter and use as streak
-}
-
-function startGameLoop() {
+async function startGameLoop() {
   // start game play
   // change previvous gameID to hold all past games in MCQ and flashcard keys with arrays for all IDs used
-  let previousGameId = null; //add .push() so you can keep track of all of the id and table it came from
-  // object has keys for all the game types and the value is an array of the IDs
-  let counter = 0;
+
   // store the id of the previous mini game
   // load a game
   // consider clearing game logic
@@ -184,14 +157,16 @@ function startGameLoop() {
   // run the choosen game
 
   //const result = chosenGame("mcq", mockQuestion)
-  const result = alternativeGetGame()
+  const result = await alternativeGetGame();
 
   if (result === "correct") {
-      counter += 1;
-      startGameLoop();
-    } else {
-      console.log("gameover") //endGame();
-    }
+    counter += 1;
+    startGameLoop();
+  } else {
+    endGame()
+    ; //endGame();
+    counter = 0
+  }
 }
 
 if (typeof module !== "undefined") {
