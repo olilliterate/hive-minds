@@ -5,23 +5,23 @@ if (typeof require !== "undefined") {
 }
 
 // think this is happening backend now, so need to think about extracting the key to tell me which game to choose
-/*
-function chooseGame(previousGameId) {
+
+function getGame(previousGameId) {
   pass;
 }
-  */
 // need a game dispatcher
 // i need to feed it the argument
 // so maybe changing to a function and cahining the parameter into a method
 // so needs to take in 2 params gameType and question
 const gameDispatcher = {
-  mcq: () => runMCQ(question),
-  ooo: () => runOOO(question),
-  picture: () => runImage(question)
-}
+  mcq: runMCQ,
+  ooo: runOOO,
+  picture: runImage,
+};
 
-function chosenGame(gameType,gameQuestion) {
-  const question = gameDispatcher[gameType]
+function chosenGame(gameType, gameQuestion) {
+
+  gameDispatcher[gameType]?.(question)
 
 }
 
@@ -30,7 +30,14 @@ function clearGameBoard() {
   node.innerHTML = "";
 }
 
+function postResults(studentResults) { // do they want object or just array
+  return [me(), counter]
+  pass
+}
+
 function showResults(counter, getLeaderboard) {
+  // get request for leaderboard
+
   const gameBoard = document.querySelector(".game-board");
 
   // counter result
@@ -82,6 +89,7 @@ function showResults(counter, getLeaderboard) {
 }
 
 function endGame() {
+  postResults()
   clearGameBoard();
   showResults(counter, getLeaderboard);
 }
@@ -101,19 +109,20 @@ function postScore() {
 
 function startGameLoop() {
   // start game play
+  // change previvous gameID to hold all past games in MCQ and flashcard keys with arrays for all IDs used
   let previousGameId = null; //add .push() so you can keep track of all of the id and table it came from
   // object has keys for all the game types and the value is an array of the IDs
   let counter = 0;
   // store the id of the previous mini game
   // load a game
   // consider clearing game logic
-  const { chosenGame, gameId } = chooseGame(previousGameId);
+  //const { chosenGame, gameId } = chooseGame(previousGameId);
   previousGameId = gameId;
   clearGameBoard();
 
   // run the choosen game
 
-  runGame(chosenGame, (result) => {
+  runGame(chosenGame(), (result) => {
     // callback needs to return something
     if (result === "correct") {
       counter += 1;
