@@ -1,15 +1,15 @@
 const db = require('../db/connect')
 class Result {
-    constructor({id, name, streak, date, user_id}) {
+    constructor({id, first_name, streak, date, user_id}) {
         this.id = id;
-        this.name = name;
+        this.first_name = first_name;
         this.streak = streak;
         this.date = date;
         this.user_id = user_id;
     }
     static async getAll() {
         
-        const resp = await db.query("SELECT user_data.name, result.streak, result.id, result.date, result.user_id FROM result LEFT JOIN user_date ON (user_data.user_id = result.user_id);");
+        const resp = await db.query("SELECT user_data.first_name, result.streak, result.id, result.date, result.user_id FROM result LEFT JOIN user_data ON (user_data.user_id = result.user_id);");
         if (resp.rows.length === 0) {
             throw new Error("No results available.")
         }

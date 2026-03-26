@@ -15,15 +15,21 @@ closeLeaderboard.addEventListener("click", () => {
 });
 
 async function loadLeaderboard() {
+  //  Spinner inside function
   leaderboardList.innerHTML = `
-    <div class="text-center">Loading leaderboard...</div>
+    <div class="text-center">
+      <div class="spinner-border text-primary"></div>
+    </div>
   `;
 
   try {
     const res = await fetch("http://localhost:5000/result");
-    const data = await res.json();
+    if (!res.ok) {
+      throw new Error("Server error");
+    }
+    const result = await res.json();
 
-    renderLeaderboard(data);
+    renderLeaderboard(result.data);
   } catch (err) {
     leaderboardList.innerHTML = `
       <div class="text-danger text-center">
@@ -41,8 +47,8 @@ function renderLeaderboard(users) {
     return;
   }
 
-  // sort highest score first
-  users.sort((a, b) => b.score - a.score);
+  // correct sorting
+  users.sort((a, b) => b.streak - a.streak);
 
   leaderboardList.innerHTML = users
     .map((user, index) => {
@@ -52,13 +58,13 @@ function renderLeaderboard(users) {
       else if (index === 2) medal = "🥉";
 
       return `
-        <div class="list-group-item d-flex justify-content-between align-items-center">
+        <div class="list-group-item leaderboard-item d-flex justify-content-between align-items-center">
           <div>
             <span class="fw-bold">${index + 1}. ${medal}</span>
-            <span class="ms-2">${user.username}</span>
+            <span class="ms-2">${user.first_name}</span>
           </div>
-          <span class="badge bg-primary rounded-pill">
-            ${user.score} pts
+          <span class="badge bg-primary rounded-pill score">
+            ${user.streak} pts
           </span>
         </div>
       `;

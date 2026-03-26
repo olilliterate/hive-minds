@@ -1,12 +1,10 @@
-// so need to use API to get question
-
-function runMCQ(question) {
+function runImage(question) {
   return new Promise((resolve, reject) => {
     // destructure questions
     const {
       question_body,
-      correct_answer,
-      prompt_1,
+      incorrect_answer,
+      prompt_1, //these prompts should hodepfully be imgURL
       prompt_2,
       prompt_3,
       prompt_4,
@@ -29,12 +27,15 @@ function runMCQ(question) {
     // make options, loop
     options.forEach((option) => {
       const button = document.createElement("button");
-      button.textContent = option;
+      const img = document.createElement("img")
+      img.src = option
+      button.appendChild(img)
+
 
       // add even listener for each one
       // needs to be for only these buttons
       button.addEventListener("click", () => {
-        resolve(option === correct_answer ? "correct" : "wrong");
+        resolve(option === incorrect_answer ? "correct" : "wrong");
       });
 
       gameBoard.appendChild(button);
@@ -42,4 +43,4 @@ function runMCQ(question) {
   });
 }
 
-module.exports = {runMCQ}
+module.exports = {runImage}
