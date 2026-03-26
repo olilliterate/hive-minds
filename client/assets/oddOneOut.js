@@ -1,10 +1,10 @@
-function runImage(question) {
+function runOOO(question) {
   return new Promise((resolve, reject) => {
     // destructure questions
     const {
       question_body,
-      incorrect_answer,
-      prompt_1, //these prompts should hodepfully be imgURL
+      correct_answer,
+      prompt_1,
       prompt_2,
       prompt_3,
       prompt_4,
@@ -27,15 +27,12 @@ function runImage(question) {
     // make options, loop
     options.forEach((option) => {
       const button = document.createElement("button");
-      const img = document.createElement("img")
-      img.src = option
-      button.appendChild(img)
-
+      button.textContent = option;
 
       // add even listener for each one
       // needs to be for only these buttons
       button.addEventListener("click", () => {
-        resolve(option === incorrect_answer ? "correct" : "wrong");
+        resolve(option === correct_answer ? "correct" : "wrong");
       });
 
       gameBoard.appendChild(button);
@@ -43,4 +40,6 @@ function runImage(question) {
   });
 }
 
-module.exports = {runImage}
+if (typeof module !== "undefined") {
+  module.exports = { runOOO };
+}

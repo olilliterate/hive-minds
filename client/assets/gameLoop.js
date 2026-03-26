@@ -1,9 +1,28 @@
-const {runMCQ} = require("./mcq")
-const { runOOO} = require("./oddOneOut")
-const { runImage } = require("./picture")
+if (typeof require !== "undefined") {
+  const { runMCQ } = require("./mcq");
+  const { runOOO } = require("./oddOneOut");
+  const { runImage } = require("./picture");
+}
 
+// think this is happening backend now, so need to think about extracting the key to tell me which game to choose
+/*
 function chooseGame(previousGameId) {
   pass;
+}
+  */
+// need a game dispatcher
+// i need to feed it the argument
+// so maybe changing to a function and cahining the parameter into a method
+// so needs to take in 2 params gameType and question
+const gameDispatcher = {
+  mcq: () => runMCQ(question),
+  ooo: () => runOOO(question),
+  picture: () => runImage(question)
+}
+
+function chosenGame(gameType,gameQuestion) {
+  const question = gameDispatcher[gameType]
+
 }
 
 function clearGameBoard() {
@@ -76,24 +95,21 @@ function getCounter() {
 }
 
 function postScore() {
-	// use getme to get userid 
-	// capture counter and use as streak
-
-	
+  // use getme to get userid
+  // capture counter and use as streak
 }
 
-// start game play
-let previousGameId = null; //add .push() so you can keep track of all of the id and table it came from
-// object has keys for all the game types and the value is an array of the IDs
-let counter = 0;
-
 function startGameLoop() {
+  // start game play
+  let previousGameId = null; //add .push() so you can keep track of all of the id and table it came from
+  // object has keys for all the game types and the value is an array of the IDs
+  let counter = 0;
   // store the id of the previous mini game
   // load a game
   // consider clearing game logic
   const { chosenGame, gameId } = chooseGame(previousGameId);
   previousGameId = gameId;
-  clearGameBoard()
+  clearGameBoard();
 
   // run the choosen game
 
@@ -108,12 +124,23 @@ function startGameLoop() {
   });
 }
 
-module.exports = {
-	startGameLoop,
-	endGame,
-	clearGameBoard,
-	showResults,
-	resetCounter,
-	getCounter,
-	chooseGame
+if (typeof module !== "undefined") {
+  module.exports = {
+    startGameLoop,
+    endGame,
+    clearGameBoard,
+    showResults,
+    resetCounter,
+    getCounter,
+    //chooseGame,
+  };
 }
+
+/*
+mcq
+ooo
+image
+flash
+
+expecting an object with question type and question body, use question type to decide the gane
+*/

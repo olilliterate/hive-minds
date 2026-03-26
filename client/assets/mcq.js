@@ -42,4 +42,6 @@ function runMCQ(question) {
   });
 }
 
-module.exports = {runMCQ}
+if (typeof module !== "undefined") {
+    module.exports = {runMCQ}
+}
