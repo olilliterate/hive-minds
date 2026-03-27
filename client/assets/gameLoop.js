@@ -1,13 +1,13 @@
-let runMCQ, runOOO, runImage, runFlash
-
+//let runMCQ, runOOO, runImage, runFlash
+/*
 if (typeof require !== "undefined") {
-  runMCQ = require("./mcq").runMCQ;
+  {runMCQ} = require("./mcq").runMCQ;
   runOOO = require("./oddOneOut").runOOO;
   runImage = require("./picture").runImage;
   //runFlashcard = require("./flashcard").runFlashcard;
   runFlash = require("./flash").runFlash;
 }
-
+*/
 const mockMCQ = {
   game_type: "mcq",
   game_content: {
@@ -93,7 +93,7 @@ const gameDispatcher = {
   mcq: runMCQ,
   ooo: runOOO,
   picture: runImage,
-  flash: runFlash,
+  //flash: runFlash
 };
 
 /*

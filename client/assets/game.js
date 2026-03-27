@@ -1,15 +1,18 @@
 // LEt's get ready to ruuuuummmmbbbbbllleeeee!!!!
-
+/*
 if (typeof require !== "undefined") {
-  const { gameDispatcher, startGameLoop } = require("../gameLoop");
+  const { startGameLoop } = require("../assets/gameLoop");
 }
-
+*/
 
 
 document.querySelector("#startGame").addEventListener("click", async () => {
+  document.querySelector(".mt-5").classList.add("d-none")
+
   document.querySelector(".game-board").classList.remove("d-none");
-  console.log("I work right");
+  
   await startGameLoop();
+  console.log("eventlistener working");
 });
 
 document.querySelector("#leaderboard").addEventListener("click", () => {
