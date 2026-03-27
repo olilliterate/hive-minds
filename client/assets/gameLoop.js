@@ -1,11 +1,11 @@
 let runMCQ, runOOO, runImage, runFlash
 
 if (typeof require !== "undefined") {
-  const { runMCQ } = require("./mcq");
-  const { runOOO } = require("./oddOneOut");
-  const { runImage } = require("./picture");
-  const { runFlashcard } = require("./flashcard");
-  const { runFlash } = require("./flash");
+  runMCQ = require("./mcq").runMCQ;
+  runOOO = require("./oddOneOut").runOOO;
+  runImage = require("./picture").runImage;
+  //runFlashcard = require("./flashcard").runFlashcard;
+  runFlash = require("./flash").runFlash;
 }
 
 const mockMCQ = {
@@ -122,6 +122,9 @@ function postResults(studentResults) {
 async function getLeaderboard() {
   return mockResult;
 }
+function getCounter() {
+  return counter
+}
 
 async function showResults() {
   // get request for leaderboard
@@ -224,6 +227,7 @@ if (typeof module !== "undefined") {
     endGame,
     resetCounter,
     startGameLoop,
+    getCounter
   };
 }
 

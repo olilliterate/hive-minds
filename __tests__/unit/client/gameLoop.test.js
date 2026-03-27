@@ -3,16 +3,8 @@
  */
 
 // import functions
-const {
-  alternativeGetGame,
-  clearGameBoard,
-  postResults,
-  getLeaderboard,
-  showResults,
-  endGame,
-  resetCounter,
-  startGameLoop,
-} = require("../../../client/assets/gameLoop");
+const gameLoop = require("../../../client/assets/gameLoop");
+const {runMCQ} = require("../../../client/assets/mcq")
 
 describe("Game Loop logic tests", () => {
 
@@ -20,10 +12,53 @@ describe("Game Loop logic tests", () => {
   beforeEach(() => jest.clearAllMocks());
   beforeEach(() => {
     document.body.innerHTML = "<div class='game-board'></div>"
-    resetCounter()
+    gameLoop.resetCounter()
   });
+  test("resetCounter resets to 0", () => {
+    gameLoop.resetCounter()
+    expect(gameLoop.getCounter()).toBe(0)
+  })
+
+  test("clearGambaord empties board", () => {
+    const gameBoard = document.querySelector(".game-board")
+    const peice = document.createElement("div")
+    gameBoard.appendChild(peice)
+
+    gameLoop.clearGameBoard()
+
+    expect(document.querySelector(".game-board").innerHTML).toBe("")
+  })
+
+  test("getLeaderboard returns data", async () => {
+    const result = await gameLoop.getLeaderboard()
+    expect(result).toHaveLength(2)
+    expect(result[0]).toHaveProperty("name")
+  })
+
+  test("endGame clears baord", async () => {
+    const gameBoard = document.querySelector(".game-board")
+    gameBoard.innerHTML = "<h2>Question?</h2><buttonn>prompt</button>"
+
+
+    await gameLoop.endGame()
+
+    expect(document.querySelector("button")).toBeNull()
+    expect(document.querySelector("h2")).toBeNull()
+  })
+
+  test("showResults renders counter and table", async () => {
+    await gameLoop.showResults()
+
+    expect(document.querySelector("h1")).not.toBeNull()
+    expect(document.querySelector("table")).not.toBeNull()
+    expect(document.querySelector("thead")).not.toBeNull()
+    expect(document.querySelector("tbody")).not.toBeNull()
+
+  })
+})
+  /*
   // need before each to reset the counter
-  /* not needed yet
+   not needed yet
   test("chosen returns a valid game on first call", () => {
     //Arrange and Act
     const result = chooseGame(null);
@@ -42,7 +77,7 @@ describe("Game Loop logic tests", () => {
     //Assert
     expect(secondId).not.toBe(gameId);
   });
-*/
+
   //test("runGame counter increment increases");
   // TODO: emulate DOM for counter
   // this feels weird, but it is a names thing I wrote
@@ -73,8 +108,8 @@ describe("Game Loop logic tests", () => {
 
     // need to emmulate DOM elements
 
-    document.body.innerHTML = "<div id='results'></div>";
-    showResults(4, mockGetLeaderBoard); // (counter, getLeaderBoard)
+
+    showResults(); // (counter, getLeaderBoard)
 
     expect(mockGetLeaderBoard).toHaveBeenCalled();
   });
@@ -92,3 +127,4 @@ describe("Game Loop logic tests", () => {
     expect(document.querySelector(".game-board").innerHTML).toBe("");
   });
 });
+*/
