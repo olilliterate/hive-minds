@@ -16,11 +16,6 @@ In order to install and run this project you need the following prerequisites:
 - Node version of `24.13` upwards
 
 ### Steps:
-
-In order to install and run this project you need the following prerequisites:
-- Node version of `24.13` upwards
-
-### Steps:
 1. Find a location on your computer you want to store the project the `git clone` our repository
 2. Navigate to the repository on your computer and run `npm i` to install dependencies
 3. Create a postgresql database and copy your transaction pooler link into a .env file with the key `DB_URL`
